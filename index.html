@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BroCafe - Nikmati Setiap Tegukan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --brown-dark: #2C1810;
+            --brown-medium: #4A3026;
+            --brown-light: #6B4F3F;
+            --brown-pale: #A67C52;
+            --brown-cream: #D4A574;
+            --brown-lightest: #F5E6D3;
+            --green-medium: #2D6A4F;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            color: var(--brown-dark);
+            background: #FFF8F0;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(44, 24, 16, 0.95);
+            padding: 15px 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;        }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-logo i { color: var(--brown-pale); }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--brown-pale); }
+
+        .btn-primary {
+            padding: 10px 24px;
+            background: var(--brown-pale);
+            color: var(--brown-dark);
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: var(--white);
+            transform: translateY(-2px);
+        }
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(rgba(44, 24, 16, 0.7), rgba(44, 24, 16, 0.7)),
+                        url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1920') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            padding-top: 80px;
+        }
+
+        .hero-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(48px, 8vw, 80px);
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-outline {
+            padding: 14px 32px;
+            background: transparent;
+            border: 2px solid var(--white);
+            color: var(--white);
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-outline:hover {
+            background: var(--white);
+            color: var(--brown-dark);
+        }
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* Section Styles */
+        .section { padding: 100px 24px; }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(32px, 5vw, 48px);
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 50px;
+            font-size: 16px;
+        }
+
+        /* Menu Section */
+        .menu-filters {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 24px;
+            background: var(--white);
+            border: 2px solid var(--brown-light);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;            font-family: inherit;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--brown-medium);
+            color: var(--white);
+            border-color: var(--brown-medium);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .menu-card {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(44, 24, 16, 0.15);
+            transition: transform 0.3s;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 40px rgba(44, 24, 16, 0.25);
+        }
+
+        .menu-card-image {
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .menu-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .menu-card:hover .menu-card-image img {
+            transform: scale(1.1);
+        }
+
+        .menu-badge {
+            position: absolute;
+            top: 16px;            right: 16px;
+            padding: 6px 14px;
+            background: var(--green-medium);
+            color: var(--white);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .menu-card-content {
+            padding: 24px;
+        }
+
+        .menu-card-title {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: var(--brown-dark);
+        }
+
+        .menu-card-desc {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .menu-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-price {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--brown-pale);
+        }
+
+        .menu-order-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--green-medium);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .menu-order-btn:hover {
+            background: var(--brown-dark);
+            transform: scale(1.1);
+        }
+
+        /* Why Choose Us */
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .why-card {
+            text-align: center;
+            padding: 40px 30px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(44, 24, 16, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .why-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(44, 24, 16, 0.2);
+        }
+
+        .why-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--brown-pale), var(--brown-light));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 32px;
+            color: var(--white);
+        }
+
+        .why-card h4 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: var(--brown-dark);
+        }
+
+        .why-card p {
+            color: #666;
+            font-size: 15px;
+        }
+        /* Testimonials */
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background: var(--white);
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(44, 24, 16, 0.1);
+            position: relative;
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 24px;
+            font-family: 'Playfair Display', serif;
+            font-size: 80px;
+            color: var(--brown-pale);
+            opacity: 0.2;
+            line-height: 1;
+        }
+
+        .rating {
+            color: #FFB800;
+            margin-bottom: 16px;
+        }
+
+        .testimonial-content {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .author-avatar {
+            width: 56px;
+            height: 56px;            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--brown-pale);
+        }
+
+        .author-info h5 {
+            font-size: 16px;
+            color: var(--brown-dark);
+        }
+
+        .author-info span {
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--brown-medium), var(--brown-dark));
+            color: var(--white);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(166, 124, 82, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-section h2 {
+            font-size: clamp(32px, 5vw, 48px);
+            margin-bottom: 20px;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            margin-bottom: 32px;            opacity: 0.9;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--brown-dark);
+            color: var(--white);
+            padding: 70px 24px 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .footer-brand .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-brand .logo i { color: var(--brown-pale); }
+
+        .footer-brand p {
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 24px;
+            line-height: 1.8;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;            justify-content: center;
+            color: var(--white);
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--brown-pale);
+            transform: translateY(-3px);
+        }
+
+        .footer-links h4 {
+            font-size: 18px;
+            margin-bottom: 24px;
+            position: relative;
+            padding-bottom: 12px;
+        }
+
+        .footer-links h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--brown-pale);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links ul a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links ul a:hover {
+            color: var(--brown-pale);
+            padding-left: 4px;
+        }
+
+        .footer-contact li {            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            color: rgba(255,255,255,0.7);
+            list-style: none;
+        }
+
+        .footer-contact i {
+            color: var(--brown-pale);
+            margin-top: 4px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-bottom a {
+            color: var(--brown-pale);
+            text-decoration: none;
+        }
+
+        /* WhatsApp Float */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+            animation: pulse 2s infinite;
+            text-decoration: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }            50% { transform: scale(1.05); }
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.6);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+            .social-links { justify-content: center; }
+            .footer-contact li { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-mug-hot"></i>
+                Bro<span style="color: var(--brown-pale);">Cafe</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Beranda</a></li>
+                <li><a href="#about">Tentang</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#testimonials">Testimoni</a></li>
+                <li><a href="https://wa.me/6288213947352" class="btn-primary" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Pesan Sekarang
+                </a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>BroCafe</h1>
+            <p class="hero-subtitle">Nikmati kopi pilihan dengan racikan spesial, makanan lezat, dan suasana hangat yang membuat setiap momen terasa istimewa.</p>
+            <div class="hero-buttons">
+                <a href="#menu" class="btn-primary">
+                    <i class="fas fa-utensils"></i> Lihat Menu
+                </a>
+                <a href="https://wa.me/6288213947352" class="btn-outline" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Chat WhatsApp
+                </a>
+            </div>        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down" style="color: white; font-size: 24px;"></i>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="section" id="menu" style="background: var(--white);">
+        <div class="container">
+            <h2 class="section-title">Menu Andalan</h2>
+            <p class="section-subtitle">Jelajahi koleksi menu terbaik kami, dari kopi spesial hingga makanan pendamping yang sempurna.</p>
+            
+            <div class="menu-filters">
+                <button class="filter-btn active" onclick="filterMenu('all')">Semua</button>
+                <button class="filter-btn" onclick="filterMenu('coffee')">Kopi</button>
+                <button class="filter-btn" onclick="filterMenu('non-coffee')">Non-Kopi</button>
+                <button class="filter-btn" onclick="filterMenu('food')">Makanan</button>
+                <button class="filter-btn" onclick="filterMenu('dessert')">Dessert</button>
+            </div>
+
+            <div class="menu-grid" id="menuGrid">
+                <!-- Menu items will be inserted here by JavaScript -->
+            </div>
+
+            <div class="text-center" style="text-align: center;">
+                <a href="https://wa.me/6288213947352" class="btn-primary" target="_blank" style="font-size: 16px; padding: 16px 40px;">
+                    <i class="fas fa-list"></i> Lihat Semua Menu via WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="section" style="background: var(--brown-lightest);" id="about">
+        <div class="container">
+            <h2 class="section-title">Mengapa Memilih BroCafe?</h2>
+            <p class="section-subtitle">Kami berkomitmen memberikan pengalaman terbaik untuk setiap pelanggan.</p>
+            
+            <div class="why-grid">
+                <div class="why-card">
+                    <div class="why-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h4>Bahan Premium</h4>
+                    <p>Kami hanya menggunakan biji kopi pilihan dan bahan segar berkualitas tinggi untuk setiap sajian.</p>
+                </div>
+                
+                <div class="why-card">
+                    <div class="why-icon">
+                        <i class="fas fa-mug-hot"></i>                    </div>
+                    <h4>Racikan Spesial</h4>
+                    <p>Setiap minuman diracik oleh barista berpengalaman dengan teknik yang tepat untuk cita rasa optimal.</p>
+                </div>
+                
+                <div class="why-card">
+                    <div class="why-icon">
+                        <i class="fas fa-truck-fast"></i>
+                    </div>
+                    <h4>Pesan Mudah</h4>
+                    <p>Pesan langsung via WhatsApp dengan respon cepat dan pengiriman tepat waktu ke lokasi Anda.</p>
+                </div>
+                
+                <div class="why-card">
+                    <div class="why-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h4>Layanan Hangat</h4>
+                    <p>Tim kami siap melayani dengan senyum ramah dan perhatian untuk kenyamanan Anda.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section" style="background: var(--white);" id="testimonials">
+        <div class="container">
+            <h2 class="section-title">Kata Pelanggan</h2>
+            <p class="section-subtitle">Dengarkan pengalaman mereka menikmati BroCafe.</p>
+            
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-content">
+                        "Kopi di BroCafe benar-benar berbeda! Rasanya kaya dan aromanya harum. Suasananya juga cozy banget buat nugas atau meeting santai."
+                    </p>
+                    <div class="testimonial-author">
+                        <img src="https://i.pravatar.cc/100?img=32" alt="Rina" class="author-avatar">
+                        <div class="author-info">
+                            <h5>Rina Amelia</h5>
+                            <span>Pelanggan Setia</span>
+                        </div>
+                    </div>
+                </div>                
+                <div class="testimonial-card">
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-content">
+                        "Pesan via WhatsApp gampang banget, pesannya cepat sampai dan masih hangat. Matcha Latte-nya juara! Bakal langganan terus."
+                    </p>
+                    <div class="testimonial-author">
+                        <img src="https://i.pravatar.cc/100?img=11" alt="Budi" class="author-avatar">
+                        <div class="author-info">
+                            <h5>Budi Santoso</h5>
+                            <span>Kopi Enthusiast</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="testimonial-content">
+                        "Tempatnya instagramable, kopinya enak, dan harganya terjangkau. Cocok buat nongkrong bareng teman atau kerja remote."
+                    </p>
+                    <div class="testimonial-author">
+                        <img src="https://i.pravatar.cc/100?img=47" alt="Sari" class="author-avatar">
+                        <div class="author-info">
+                            <h5>Sari Dewi</h5>
+                            <span>Content Creator</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section cta-section">
+        <div class="cta-content">
+            <h2>Siap Menikmati Kopi Terbaik?</h2>
+            <p>Pesan sekarang via WhatsApp dan rasakan pengalaman ngopi yang tak terlupakan di BroCafe. Kami tunggu pesanan Anda!</p>
+            <a href="https://wa.me/6288213947352" class="btn-primary" target="_blank" style="font-size: 16px; padding: 16px 40px;">                <i class="fab fa-whatsapp"></i> Pesan Sekarang via WhatsApp
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="logo">
+                    <i class="fas fa-mug-hot"></i>
+                    Bro<span style="color: var(--brown-pale);">Cafe</span>
+                </div>
+                <p>Menghadirkan pengalaman kopi autentik dengan bahan premium dan layanan terbaik. Setiap tegukan adalah cerita, setiap kunjungan adalah kenangan.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Navigasi</h4>
+                <ul>
+                    <li><a href="#home"><i class="fas fa-chevron-right"></i> Beranda</a></li>
+                    <li><a href="#about"><i class="fas fa-chevron-right"></i> Tentang Kami</a></li>
+                    <li><a href="#menu"><i class="fas fa-chevron-right"></i> Menu</a></li>
+                    <li><a href="#testimonials"><i class="fas fa-chevron-right"></i> Testimoni</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Menu Populer</h4>
+                <ul>
+                    <li><a href="#">☕ Classic Espresso</a></li>
+                    <li><a href="#">🥛 Hazelnut Latte</a></li>
+                    <li><a href="#">🍵 Matcha Latte</a></li>
+                    <li><a href="#">🥐 Butter Croissant</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Kontak</h4>
+                <ul class="footer-contact">
+                    <li>
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Jl. Kopi No. 123, Jakarta Pusat</span>
+                    </li>
+                    <li>                        <i class="fas fa-clock"></i>
+                        <span>Setiap Hari: 07.00 - 22.00 WIB</span>
+                    </li>
+                    <li>
+                        <i class="fab fa-whatsapp"></i>
+                        <a href="https://wa.me/6288213947352" target="_blank">+62 882-1394-7352</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 BroCafe. All Rights Reserved. | <a href="https://wa.me/6288213947352" target="_blank"><i class="fab fa-whatsapp"></i> Hubungi Kami via WhatsApp</a></p>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/6288213947352" class="whatsapp-float" target="_blank" aria-label="Chat via WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // Menu Data
+        const menuItems = [
+            {
+                id: 1,
+                name: "Classic Espresso",
+                category: "coffee",
+                price: "Rp 25.000",
+                description: "Kopi hitam pekat dengan cita rasa bold dan aroma yang menggugah selera.",
+                image: "https://images.unsplash.com/photo-1572490122746-2691f2d6c524?w=600",
+                badge: "Best Seller"
+            },
+            {
+                id: 2,
+                name: "Hazelnut Cappuccino",
+                category: "coffee",
+                price: "Rp 32.000",
+                description: "Perpaduan espresso, susu steamed, dan sirup hazelnut yang creamy.",
+                image: "https://images.unsplash.com/photo-1570106772185-1c59e594f468?w=600",
+                badge: null
+            },
+            {
+                id: 3,
+                name: "Matcha Latte",
+                category: "non-coffee",
+                price: "Rp 35.000",
+                description: "Matcha premium Jepang dengan susu segar, manis dan menyegarkan.",
+                image: "https://images.unsplash.com/photo-1541167760496-1628856ab772?w=600",
+                badge: "New"            },
+            {
+                id: 4,
+                name: "Butter Croissant",
+                category: "food",
+                price: "Rp 28.000",
+                description: "Croissant Prancis autentik dengan lapisan renyah dan rasa butter yang kaya.",
+                image: "https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=600",
+                badge: null
+            },
+            {
+                id: 5,
+                name: "New York Cheesecake",
+                category: "dessert",
+                price: "Rp 42.000",
+                description: "Cheesecake creamy dengan topping berry segar dan cracker base yang gurih.",
+                image: "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=600",
+                badge: "Best Seller"
+            },
+            {
+                id: 6,
+                name: "Cold Brew Vanilla",
+                category: "coffee",
+                price: "Rp 30.000",
+                description: "Kopi cold brew 12 jam dengan sentuhan vanilla dan es batu kristal.",
+                image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600",
+                badge: null
+            }
+        ];
+
+        // Render Menu
+        function renderMenu(filter = 'all') {
+            const menuGrid = document.getElementById('menuGrid');
+            menuGrid.innerHTML = '';
+            
+            const filteredItems = filter === 'all' 
+                ? menuItems 
+                : menuItems.filter(item => item.category === filter);
+            
+            filteredItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'menu-card';
+                card.innerHTML = `
+                    <div class="menu-card-image">
+                        <img src="${item.image}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/600x400/2C1810/FFFFFF?text=${encodeURIComponent(item.name)}'">
+                        ${item.badge ? `<span class="menu-badge">${item.badge}</span>` : ''}
+                    </div>
+                    <div class="menu-card-content">
+                        <h4 class="menu-card-title">${item.name}</h4>
+                        <p class="menu-card-desc">${item.description}</p>                        <div class="menu-card-footer">
+                            <span class="menu-price">${item.price}</span>
+                            <a href="https://wa.me/6288213947352?text=Halo%20BroCafe%21%20Saya%20ingin%20pesan%20${encodeURIComponent(item.name)}" 
+                               class="menu-order-btn" target="_blank">
+                                <i class="fas fa-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                menuGrid.appendChild(card);
+            });
+        }
+
+        // Filter Menu
+        function filterMenu(category) {
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            renderMenu(category);
+        }
+
+        // Initial render
+        renderMenu();
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+  </html>
